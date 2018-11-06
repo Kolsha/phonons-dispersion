@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/phonons-dispersion/precache-manifest.fd7807b22e098c0227913fa6a3398f75.js"
+  "/phonons-dispersion/precache-manifest.87d3e3276672ffbd7a02383dc8c99d8a.js"
 );
 
 workbox.clientsClaim();
