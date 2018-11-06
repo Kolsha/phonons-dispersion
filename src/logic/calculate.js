@@ -7,6 +7,10 @@
 
  */
 
+
+const qFactor = Math.pow(10.0, 8);
+
+
 function getBranchPoint(isOptic, q, params) {
 
     const m1_m2 = (params.m1 * params.m2);
@@ -41,8 +45,6 @@ export default function calculateBranches(params) {
             C: 1.0
      */
 
-
-    const qFactor = Math.pow(10.0, 8);
 
     let result = {
         acoustic: {
@@ -86,7 +88,7 @@ export default function calculateBranches(params) {
 
 
     const qMax = Math.PI / params.a;
-    const qStep = 0.01 / params.a;
+    const qStep = 0.001 / params.a;
 
     for (let q = 0.0; q <= qMax; q += qStep) {
         const acoustic = getBranchPoint(false, q, params);
@@ -114,9 +116,190 @@ export default function calculateBranches(params) {
 
     return result;
 
+}
+
+//params is animationParams
+
+
+const offset = 20;
+
+const offset_y = 70;
+
+function getWidth() {
+    return offset;
+}
+
+export function calculateAcousticAnimation(currentTime, axis, params) {
+
+
+    let result = {
+
+        x: [],
+        y: [],
+        marker: {
+            size: 28,
+            color: []
+        },
+        //name: 'Acoustic',
+
+        mode: 'markers'
+
+
+    };
+
+    //params.currQ = Math.PI / params.a / 2.0 * qFactor;
+
+    const currWAcoustic = getBranchPoint(false, params.currQ / qFactor, params);
+
+    const currWOptic = getBranchPoint(true, params.currQ / qFactor, params);
+
+
+    // console.log('Curq', params.currQ);
+    //
+    // console.log('Curw:', currW);
+    //
+    // console.log((params.currQ - Math.PI / (2.0 * params.a) * qFactor));
+
+    let u1 = 1.0, u2 = 1.0;
+    if (params.m1 > params.m2) {
+        u1 = (-params.m2 / params.m1);
+    }
+    else if (params.m1 < params.m2) {
+        u2 = (-params.m1 / params.m2);
+    }
+
+
+    for (let i = 1; i < 14; i++) {
+        let xW = 0, yW = 0,
+            xA = 0, yA = 0,
+            colorW= 'black', colorA = 'blue';
+
+
+        if (i % 2 === 1) {
+
+            colorW = 'black';
+            colorA = 'blue';
+
+            xA = (u1 * 10.0 * Math.cos(2.0 * params.currQ * params.a * i - currWAcoustic * currentTime / params.acousticWMax) + offset * (i - 1));
+
+            if (Math.abs(params.currQ - Math.PI / (2.0 * params.a) * qFactor) < 0.2) {
+                xW = offset * (i - 1);
+            } else {
+                xW = (u1 * 10.0 * Math.cos(2.0 * params.currQ * params.a * i - currWOptic * currentTime / params.opticalWMax) + offset * (i - 1));
+            }
+
+
+        } else {
+            colorW = 'yellow';
+            colorA = 'red';
+
+            xW = (u2 * 10.0 * Math.cos(2.0 * params.currQ * params.a * i - currWOptic * currentTime / params.opticalWMax) + offset * (i - 1));
+
+
+            if (Math.abs(params.currQ - Math.PI / (2.0 * params.a) * qFactor) < 0.2) {
+                xA = offset * (i - 1);
+            } else {
+                xA = (u2 * 10.0 * Math.cos(2.0 * params.currQ * params.a * i - currWAcoustic * currentTime / params.acousticWMax) + offset * (i - 1));
+            }
+
+
+        }
+
+        yW = offset_y;
+
+        yA = 3 * offset_y;
+
+        // [xW,yW] = [yW,xW];
+        //
+        // [xA,yA] = [yA,xA];
+
+
+        result.marker.color.push(colorW);
+        result.x.push(xW);
+        result.y.push(yW);
+
+        result.marker.color.push(colorA);
+        result.x.push(xA);
+        result.y.push(yA);
+
+
+        // if (i % 2 === 1) {
+        //     result.marker.color.push('black');
+        //
+        //     if (Math.abs(params.currQ - Math.PI / (2.0 * params.a)) >= 0.01) {
+        //         let x = 0, y = 0;
+        //         if (axis === 'x') {
+        //
+        //             x = (13.0 * Math.cos(2.0 * params.currQ * params.a * i - currW / params.acousticWMax * currentTime) + getWidth() / 10 * (i - 1));
+        //             y = offset;
+        //
+        //
+        //         } else {
+        //             x = 15 + getWidth() / 10 * (i - 1);
+        //             y = 13.0 * Math.cos(2.0 * params.currQ * params.a * i - currW / params.acousticWMax * currentTime) + offset;
+        //
+        //         }
+        //
+        //         result.x.push(x);
+        //         result.y.push(y);
+        //
+        //     }
+        //     else if (params.m1 !== params.m2) {
+        //         if (axis === 'x') {
+        //
+        //
+        //             result.x.push(getWidth() / 10 * (i - 1));
+        //             result.y.push(offset);
+        //
+        //         } else {
+        //
+        //
+        //             result.x.push(20 + getWidth() / 10 * (i - 1));
+        //             result.y.push(offset);
+        //         }
+        //
+        //     }
+        //     else if (axis === 'x') {
+        //
+        //
+        //         result.x.push((13.0 * Math.cos(2.0 * params.currQ * params.a * i - currW / params.acousticWMax * currentTime) + getWidth() / 10 * (i - 1)));
+        //         result.y.push(offset);
+        //
+        //
+        //     } else {
+        //
+        //         result.x.push(15 + getWidth() / 10 * (i - 1));
+        //         result.y.push((13.0 * Math.cos(2.0 * params.currQ * params.a * i - currW / params.acousticWMax * currentTime) + offset));
+        //     }
+        //
+        // }
+        // else {
+        //
+        //     result.marker.color.push('yellow');
+        //
+        //     let x = 0, y = 0;
+        //
+        //     if (axis === 'x') {
+        //         x = (13.0 * Math.cos(2.0 * params.currQ * params.a * i - currW / params.acousticWMax * currentTime) + getWidth() / 10 * (i - 1));
+        //         y = offset;
+        //         // g.fillOval((int), 40, 20, 20);
+        //     } else {
+        //         x = 15 + getWidth() / 10 * (i - 1);
+        //         y = (13.0 * Math.cos(2.0 * params.currQ * params.a * i - currW / params.acousticWMax * currentTime) + offset);
+        //
+        //     }
+        //
+        //     result.x.push(x);
+        //     result.y.push(y);
+        // }
+    }
+
+
+    return result;
+
 
 }
-//
+
 // const res = calculateBranches({
 //     m1: 1.0,
 //     m2: 2.0,

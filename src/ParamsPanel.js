@@ -15,8 +15,6 @@ class ParamsPanel extends PureComponent {
         m2: 2.0,
         a: 1.0,
         C: 1.0,
-        currQ: 0.0
-
     };
     handleInputChange = event => {
         //this.props.textChange(event);
@@ -38,7 +36,6 @@ class ParamsPanel extends PureComponent {
         let newParams = Object.assign({}, this.state);
         newParams.m1 *= constants.protonMass;
         newParams.m2 *= constants.protonMass;
-        newParams.C *= constants.scaleFactorC;
 
         this.props.newParamsHandler(newParams);
         //alert(this.params);
@@ -105,15 +102,7 @@ class ParamsPanel extends PureComponent {
 
 
                 <br/>
-                <InputGroup>
-                    <InputGroupAddon addonType="prepend">Current Q</InputGroupAddon>
-                    <Input name={"currQ"} value={this.state.currQ}
-                           placeholder=""
-                           type="range"
-                           min="0.0" max={this.props.maxQ} step="0.1"
-                           onChange={this.handleInputChange}/>
-                    <InputGroupAddon addonType="append">  {this.state.currQ} cm^(-1)</InputGroupAddon>
-                </InputGroup>
+
 
 
                 <br/>
