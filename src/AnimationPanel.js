@@ -1,4 +1,4 @@
-import React, {Component, PureComponent} from 'react';
+import React, {PureComponent} from 'react';
 
 
 import Plot from 'react-plotly.js';
@@ -18,11 +18,37 @@ export default class AnimationPanel extends PureComponent {
         axis: 'x',
     };
 
+    startStopAnimation() {
+        this.setState({
+            isRunning: !(this.state.isRunning)
+        });
+    }
+
     plot = {
         layout: {
             autosize: true, title: 'Animation',
             xaxis: {range: [-20, 280]},
-            yaxis: {range: [0, 480]}
+            yaxis: {range: [0, 480]},
+
+            updatemenus: [
+                {
+                    buttons: [
+                        {
+                            args: ['start/stop'],
+                            label: (this.state.isRunning) ? 'Stop' : 'Start',
+                            method: 'restyle'
+                        }
+                    ],
+                    direction: 'left',
+                    //pad: {'r': 10, 't': 10},
+                    showactive: true,
+                    type: 'buttons',
+                    x: 0.1,
+                    xanchor: 'left',
+                    y: 1.1,
+                    yanchor: 'top'
+                }
+            ]
         },
         config: {}
     };
@@ -99,7 +125,7 @@ export default class AnimationPanel extends PureComponent {
 
     render() {
 
-        //console.log(this.props.animationParams);
+        this.plot.layout.updatemenus[0].buttons[0].label = (this.state.isRunning) ? 'Stop' : 'Start';
 
         return (
 
@@ -118,6 +144,8 @@ export default class AnimationPanel extends PureComponent {
                       this.plot.layout = figure.layout;
                       this.plot.config = figure.config
                   }}
+
+                  onRestyle={this.startStopAnimation.bind(this)}
 
             />
 

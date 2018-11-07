@@ -20,24 +20,6 @@ import ParamsPanel from './ParamsPanel.js';
 import AnimationPanel from './AnimationPanel.js';
 
 
-function shuffleInPlace(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-        let j = Math.floor(Math.random() * (i + 1));
-        let temp = array[i];
-        array[i] = array[j];
-        array[j] = temp;
-    }
-}
-
-function getRandomInt(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-
-function range(size, startAt = 0) {
-    return [...Array(size).keys()].map(i => i + startAt);
-}
-
 class App extends Component {
 
     state = {

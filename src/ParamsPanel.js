@@ -1,7 +1,7 @@
 import React, {PureComponent} from 'react';
 
 
-import {InputGroup, InputGroupAddon, InputGroupText, Input, Button} from 'reactstrap';
+import {InputGroup, InputGroupAddon, Input, Button} from 'reactstrap';
 
 
 import * as constants from './logic/constants.js';
@@ -102,7 +102,6 @@ class ParamsPanel extends PureComponent {
 
 
                 <br/>
-
 
 
                 <br/>
