@@ -119,7 +119,7 @@ export default class AnimationPanel extends PureComponent {
         //
         // });
 
-        return [calculateAcousticAnimation(this.state.currentTime, this.state.axis, this.props.animationParams)];
+        return calculateAcousticAnimation(this.state.currentTime, this.state.axis, this.props.animationParams);
     }
 
 

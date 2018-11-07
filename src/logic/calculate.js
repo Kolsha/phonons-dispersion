@@ -154,20 +154,36 @@ export default function calculateBranches(params) {
 export function calculateAcousticAnimation(currentTime, axis, params) {
 
 
-    let result = {
+    let result = [
+        {
 
-        x: [],
-        y: [],
-        marker: {
-            size: 28,
-            color: []
+            x: [],
+            y: [],
+            marker: {
+                size: 28,
+                color: []
+            },
+            name: 'Acoustic',
+
+            mode: 'lines+markers'
+
+
         },
-        //name: 'Acoustic',
+        {
 
-        mode: 'markers'
+            x: [],
+            y: [],
+            marker: {
+                size: 28,
+                color: []
+            },
+            name: 'Optical',
+
+            mode: 'lines+markers'
 
 
-    };
+        }
+    ];
 
     const offset_x = 50;
 
@@ -242,13 +258,13 @@ export function calculateAcousticAnimation(currentTime, axis, params) {
         // [xA,yA] = [yA,xA];
 
 
-        result.marker.color.push(colorW);
-        result.x.push(xW);
-        result.y.push(yW);
+        result[1].marker.color.push(colorW);
+        result[1].x.push(xW);
+        result[1].y.push(yW);
 
-        result.marker.color.push(colorA);
-        result.x.push(xA);
-        result.y.push(yA);
+        result[0].marker.color.push(colorA);
+        result[0].x.push(xA);
+        result[0].y.push(yA);
 
 
         // if (i % 2 === 1) {
