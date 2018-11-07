@@ -121,14 +121,6 @@ export default function calculateBranches(params) {
 //params is animationParams
 
 
-const offset = 20;
-
-const offset_y = 70;
-
-function getWidth() {
-    return offset;
-}
-
 export function calculateAcousticAnimation(currentTime, axis, params) {
 
 
@@ -146,6 +138,12 @@ export function calculateAcousticAnimation(currentTime, axis, params) {
 
 
     };
+
+    const offset_x = 50;
+
+    const offset_y = 100;
+
+    const amplitude = 3 * Math.sqrt(offset_x);
 
     //params.currQ = Math.PI / params.a / 2.0 * qFactor;
 
@@ -172,7 +170,7 @@ export function calculateAcousticAnimation(currentTime, axis, params) {
     for (let i = 1; i < 14; i++) {
         let xW = 0, yW = 0,
             xA = 0, yA = 0,
-            colorW= 'black', colorA = 'blue';
+            colorW = 'black', colorA = 'blue';
 
 
         if (i % 2 === 1) {
@@ -180,12 +178,12 @@ export function calculateAcousticAnimation(currentTime, axis, params) {
             colorW = 'black';
             colorA = 'blue';
 
-            xA = (u1 * 10.0 * Math.cos(2.0 * params.currQ * params.a * i - currWAcoustic * currentTime / params.acousticWMax) + offset * (i - 1));
+            xA = (u1 * amplitude * Math.cos(2.0 * params.currQ * params.a * i - currWAcoustic * currentTime / params.acousticWMax) + offset_x * (i - 1));
 
             if (Math.abs(params.currQ - Math.PI / (2.0 * params.a) * qFactor) < 0.2) {
-                xW = offset * (i - 1);
+                xW = offset_x * (i - 1);
             } else {
-                xW = (u1 * 10.0 * Math.cos(2.0 * params.currQ * params.a * i - currWOptic * currentTime / params.opticalWMax) + offset * (i - 1));
+                xW = (u1 * amplitude * Math.cos(2.0 * params.currQ * params.a * i - currWOptic * currentTime / params.opticalWMax) + offset_x * (i - 1));
             }
 
 
@@ -193,13 +191,13 @@ export function calculateAcousticAnimation(currentTime, axis, params) {
             colorW = 'yellow';
             colorA = 'red';
 
-            xW = (u2 * 10.0 * Math.cos(2.0 * params.currQ * params.a * i - currWOptic * currentTime / params.opticalWMax) + offset * (i - 1));
+            xW = (u2 * amplitude * Math.cos(2.0 * params.currQ * params.a * i - currWOptic * currentTime / params.opticalWMax) + offset_x * (i - 1));
 
 
             if (Math.abs(params.currQ - Math.PI / (2.0 * params.a) * qFactor) < 0.2) {
-                xA = offset * (i - 1);
+                xA = offset_x * (i - 1);
             } else {
-                xA = (u2 * 10.0 * Math.cos(2.0 * params.currQ * params.a * i - currWAcoustic * currentTime / params.acousticWMax) + offset * (i - 1));
+                xA = (u2 * amplitude * Math.cos(2.0 * params.currQ * params.a * i - currWAcoustic * currentTime / params.acousticWMax) + offset_x * (i - 1));
             }
 
 

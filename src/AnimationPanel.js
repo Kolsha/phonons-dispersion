@@ -15,30 +15,65 @@ export default class AnimationPanel extends PureComponent {
         isRunning: !false,
         currentTime: 0.0,
         //mode: 'optical',
-        axis: 'x'
+        axis: 'x',
+    };
+
+    plot = {
+        layout: {
+            autosize: true, title: 'Animation',
+            xaxis: {range: [-20, 280]},
+            yaxis: {range: [0, 480]}
+        },
+        config: {}
     };
 
     componentDidUpdate() {
         //console.log('anim componentDidUpdate()');
 
 
-
     }
 
     componentDidMount() {
-        this.setStateInterval = window.setInterval(() => {
-            if (!this.state.isRunning)
-                return;
-            this.setState({
-                currentTime: (this.state.currentTime + constants.deltaT)
-            });
-        }, Math.floor(constants.deltaT * 500));
-
-        console.log('mount anim');
+        // this.setStateInterval = window.setInterval(() => {
+        //     if (!this.state.isRunning)
+        //         return;
+        //     this.setState({
+        //         currentTime: (this.state.currentTime + constants.deltaT)
+        //     });
+        // }, Math.floor(constants.deltaT * 500));
+        //
+        // console.log('mount anim');
+        this.startLoop();
     }
 
     componentWillUnmount() {
-        window.clearInterval(this.setStateInterval);
+        // window.clearInterval(this.setStateInterval);
+        this.stopLoop();
+    }
+
+    startLoop() {
+        if (!this._frameId) {
+            this._frameId = window.requestAnimationFrame(this.loop.bind(this));
+        }
+    }
+
+    loop() {
+        this._frameId = window.requestAnimationFrame(this.loop.bind(this));
+
+
+        if (!this.state.isRunning)
+            return;
+        this.setState({
+            currentTime: (this.state.currentTime + constants.deltaT)
+        });
+
+
+    }
+
+    stopLoop() {
+        window.cancelAnimationFrame(this._frameId);
+        // Note: no need to worry if the loop has already been cancelled
+        // cancelAnimationFrame() won't throw an error
     }
 
 
@@ -71,11 +106,19 @@ export default class AnimationPanel extends PureComponent {
             <Plot style={{width: '100%'}}
 
                   data={this.getScatterData()}
-                  layout={{
-                      autosize: true, title: 'Animation',
-                      xaxis: {range: [-20, 280]},
-                      yaxis: {range: [0, 480]}
+                  layout={this.plot.layout}
+
+                  config={this.plot.config}
+
+                  onInitialized={(figure) => {
+                      this.plot.layout = figure.layout;
+                      this.plot.config = figure.config
                   }}
+                  onUpdate={(figure) => {
+                      this.plot.layout = figure.layout;
+                      this.plot.config = figure.config
+                  }}
+
             />
 
         )
