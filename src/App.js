@@ -53,6 +53,15 @@ class App extends Component {
     };
 
 
+    plot = {
+        layout: {
+            title: 'Dispersion of phonons',
+            hovermode: 'closest'
+        },
+        config: {}
+    };
+
+
     branches = null;
 
 
@@ -73,7 +82,7 @@ class App extends Component {
     }
 
     getScatterData() {
-        return [this.branches.acoustic, this.branches.optical, this.branches.selected];
+        return [this.branches.acoustic, this.branches.optical, this.branches.selected, this.branches.brillouin_zone];
     }
 
     handleNewParams = newParams => {
@@ -135,14 +144,25 @@ class App extends Component {
                                 <Plot style={{width: '100%'}}
                                       data={this.getScatterData()}
                                       onClick={this.handleBranchClick}
-                                      layout={{title: 'Dispersion of phonons', hovermode: 'closest'}}
+
+                                      layout={this.plot.layout}
+
+                                      config={this.plot.config}
+
+                                      onInitialized={(figure) => {
+                                          this.plot.layout = figure.layout;
+                                          this.plot.config = figure.config
+                                      }}
+                                      onUpdate={(figure) => {
+                                          this.plot.layout = figure.layout;
+                                          this.plot.config = figure.config
+                                      }}
                                 />
                             </Col>
 
                             <Col xs={{size: 4, offset: 0}}>
 
-                                <ParamsPanel newParamsHandler={this.handleNewParams}
-                                             maxQ={this.branches.acoustic.x[this.branches.acoustic.x.length - 1]}/>
+                                <ParamsPanel newParamsHandler={this.handleNewParams}/>
 
                             </Col>
                         </Row>

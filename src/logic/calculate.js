@@ -77,18 +77,35 @@ export default function calculateBranches(params) {
             y: [],
             marker: {
                 size: 10,
-                color: ['black']
+                color: 'black'
             },
 
             name: 'Current',
 
             mode: 'markers'
         },
+
+        brillouin_zone: {
+            x: [],
+            y: [],
+            marker: {
+                size: 3,
+                color: 'black'
+            },
+
+            name: 'Brillouin zone',
+
+            mode: 'markers',
+
+
+        }
     };
 
 
     const qMax = Math.PI / params.a;
     const qStep = 0.001 / params.a;
+
+    let wMax = 0;
 
     for (let q = 0.0; q <= qMax; q += qStep) {
         const acoustic = getBranchPoint(false, q, params);
@@ -99,8 +116,21 @@ export default function calculateBranches(params) {
 
         result.optical.x.push(q * qFactor);
         result.optical.y.push(optical);
+        //
+        // if(acoustic > wMax)
+        //     wMax = acoustic;
+
+        if (optical > wMax)
+            wMax = optical;
 
 
+    }
+
+    for (let q = qMax / 2; q <= qMax; q += qMax / 2) {
+        for (let y = 0; y < wMax; y += wMax / 20) {
+            result.brillouin_zone.x.push(q * qFactor);
+            result.brillouin_zone.y.push(y);
+        }
     }
 
 
