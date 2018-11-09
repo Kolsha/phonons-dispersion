@@ -1,6 +1,6 @@
 {
-  "main.js": "/phonons-dispersion/static/js/main.86a783e3.chunk.js",
-  "main.js.map": "/phonons-dispersion/static/js/main.86a783e3.chunk.js.map",
+  "main.js": "/phonons-dispersion/static/js/main.f59933bf.chunk.js",
+  "main.js.map": "/phonons-dispersion/static/js/main.f59933bf.chunk.js.map",
   "static/css/1.3fd7dbc2.chunk.css": "/phonons-dispersion/static/css/1.3fd7dbc2.chunk.css",
   "static/js/1.a892d348.chunk.js": "/phonons-dispersion/static/js/1.a892d348.chunk.js",
   "static/js/1.a892d348.chunk.js.map": "/phonons-dispersion/static/js/1.a892d348.chunk.js.map",
@@ -8,6 +8,6 @@
   "runtime~main.js.map": "/phonons-dispersion/static/js/runtime~main.5a05ce87.js.map",
   "static/css/1.3fd7dbc2.chunk.css.map": "/phonons-dispersion/static/css/1.3fd7dbc2.chunk.css.map",
   "index.html": "/phonons-dispersion/index.html",
-  "precache-manifest.ce376afb86d349fd6854e933b870d29c.js": "/phonons-dispersion/precache-manifest.ce376afb86d349fd6854e933b870d29c.js",
+  "precache-manifest.6d4ef5abf1e16f172b508694d35f0b37.js": "/phonons-dispersion/precache-manifest.6d4ef5abf1e16f172b508694d35f0b37.js",
   "service-worker.js": "/phonons-dispersion/service-worker.js"
 }
