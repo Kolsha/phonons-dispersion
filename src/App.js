@@ -113,11 +113,8 @@ class App extends Component {
             <div>
                 <Navbar color="dark" dark>
                     <NavbarBrand href={"#"}>Phonons</NavbarBrand>
-
-
-                    <NavLink href="#">Github</NavLink>
+                    <NavLink href="https://github.com/Kolsha/phonons-dispersion/" target={"_blank"}>Github</NavLink>
                 </Navbar>
-
 
                 <Jumbotron fluid={true}>
                     <Container fluid={true} className={"h-25"}>
@@ -165,12 +162,10 @@ class App extends Component {
 
 
                 <footer className="footer font-small blue">
-
-
+                    
                     <div className="footer-copyright text-center py-3">© 2018 Copyright:
                         <a href="https://kolsha.ru"> Kolsha</a>
                     </div>
-
 
                 </footer>
             </div>
