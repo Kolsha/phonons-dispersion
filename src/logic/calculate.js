@@ -151,8 +151,13 @@ export default function calculateBranches(params) {
 //params is animationParams
 
 
-export function calculateAcousticAnimation(currentTime, axis, params) {
+export function calculateXAnimation(currentTime, params) {
 
+    const offset_x = 50;
+
+    const offset_y = 100;
+
+    const amplitude = 3 * Math.sqrt(offset_x);
 
     let result = [
         {
@@ -185,24 +190,11 @@ export function calculateAcousticAnimation(currentTime, axis, params) {
         }
     ];
 
-    const offset_x = 50;
-
-    const offset_y = 100;
-
-    const amplitude = 3 * Math.sqrt(offset_x);
-
-    //params.currQ = Math.PI / params.a / 2.0 * qFactor;
 
     const currWAcoustic = getBranchPoint(false, params.currQ / qFactor, params);
 
     const currWOptic = getBranchPoint(true, params.currQ / qFactor, params);
 
-
-    // console.log('Curq', params.currQ);
-    //
-    // console.log('Curw:', currW);
-    //
-    // console.log((params.currQ - Math.PI / (2.0 * params.a) * qFactor));
 
     let u1 = 1.0, u2 = 1.0;
     if (params.m1 > params.m2) {
@@ -253,9 +245,121 @@ export function calculateAcousticAnimation(currentTime, axis, params) {
 
         yA = 3 * offset_y;
 
-        // [xW,yW] = [yW,xW];
-        //
-        // [xA,yA] = [yA,xA];
+
+        result[1].marker.color.push(colorW);
+        result[1].x.push(xW);
+        result[1].y.push(yW);
+
+        result[0].marker.color.push(colorA);
+        result[0].x.push(xA);
+        result[0].y.push(yA);
+
+    }
+
+
+    return result;
+
+
+}
+
+
+export function calculateYAnimation(currentTime, params) {
+
+
+    const offset_x = 50;
+
+    const offset_y = 100;
+
+    const amplitude = 5 * Math.sqrt(offset_y);
+
+    let result = [
+        {
+
+            x: [],
+            y: [],
+            marker: {
+                size: 28,
+                color: []
+            },
+            name: 'Acoustic',
+
+            mode: 'lines+markers'
+
+
+        },
+        {
+
+            x: [],
+            y: [],
+            marker: {
+                size: 28,
+                color: []
+            },
+            name: 'Optical',
+
+            mode: 'lines+markers'
+
+
+        }
+    ];
+
+
+    const currWAcoustic = getBranchPoint(false, params.currQ / qFactor, params);
+
+    const currWOptic = getBranchPoint(true, params.currQ / qFactor, params);
+
+
+    let u1 = 1.0, u2 = 1.0;
+    if (params.m1 > params.m2) {
+        u1 = (-params.m2 / params.m1);
+    }
+    else if (params.m1 < params.m2) {
+        u2 = (-params.m1 / params.m2);
+    }
+
+
+    for (let i = 1; i <= params.ball_count; i++) {
+        let xW = 0, yW = 0,
+            xA = 0, yA = 0,
+            colorW = 'black', colorA = 'blue';
+
+
+        if (i % 2 === 1) {
+
+            colorW = 'black';
+            colorA = 'blue';
+
+            yA = offset_y + (u1 * amplitude * Math.cos(2.0 * params.currQ * params.a * i - currWAcoustic * currentTime / params.acousticWMax));
+
+            if (Math.abs(params.currQ - Math.PI / (2.0 * params.a) * qFactor) < 0.2) {
+                yW = 0;
+            } else {
+                yW = (u1 * amplitude * Math.cos(2.0 * params.currQ * params.a * i - currWOptic * currentTime / params.opticalWMax));
+            }
+
+
+        } else {
+            colorW = 'yellow';
+            colorA = 'red';
+
+            yW = (u2 * amplitude * Math.cos(2.0 * params.currQ * params.a * i - currWOptic * currentTime / params.opticalWMax));
+
+
+            if (Math.abs(params.currQ - Math.PI / (2.0 * params.a) * qFactor) < 0.2) {
+                yA = offset_y;
+            } else {
+                yA = offset_y + (u2 * amplitude * Math.cos(2.0 * params.currQ * params.a * i - currWAcoustic * currentTime / params.acousticWMax));
+            }
+
+
+        }
+
+        xW = offset_x * (i - 1);
+
+        xA = offset_x * (i - 1);
+
+        yA += 2 * offset_y;
+        yW += offset_y;
 
 
         result[1].marker.color.push(colorW);
@@ -266,76 +370,6 @@ export function calculateAcousticAnimation(currentTime, axis, params) {
         result[0].x.push(xA);
         result[0].y.push(yA);
 
-
-        // if (i % 2 === 1) {
-        //     result.marker.color.push('black');
-        //
-        //     if (Math.abs(params.currQ - Math.PI / (2.0 * params.a)) >= 0.01) {
-        //         let x = 0, y = 0;
-        //         if (axis === 'x') {
-        //
-        //             x = (13.0 * Math.cos(2.0 * params.currQ * params.a * i - currW / params.acousticWMax * currentTime) + getWidth() / 10 * (i - 1));
-        //             y = offset;
-        //
-        //
-        //         } else {
-        //             x = 15 + getWidth() / 10 * (i - 1);
-        //             y = 13.0 * Math.cos(2.0 * params.currQ * params.a * i - currW / params.acousticWMax * currentTime) + offset;
-        //
-        //         }
-        //
-        //         result.x.push(x);
-        //         result.y.push(y);
-        //
-        //     }
-        //     else if (params.m1 !== params.m2) {
-        //         if (axis === 'x') {
-        //
-        //
-        //             result.x.push(getWidth() / 10 * (i - 1));
-        //             result.y.push(offset);
-        //
-        //         } else {
-        //
-        //
-        //             result.x.push(20 + getWidth() / 10 * (i - 1));
-        //             result.y.push(offset);
-        //         }
-        //
-        //     }
-        //     else if (axis === 'x') {
-        //
-        //
-        //         result.x.push((13.0 * Math.cos(2.0 * params.currQ * params.a * i - currW / params.acousticWMax * currentTime) + getWidth() / 10 * (i - 1)));
-        //         result.y.push(offset);
-        //
-        //
-        //     } else {
-        //
-        //         result.x.push(15 + getWidth() / 10 * (i - 1));
-        //         result.y.push((13.0 * Math.cos(2.0 * params.currQ * params.a * i - currW / params.acousticWMax * currentTime) + offset));
-        //     }
-        //
-        // }
-        // else {
-        //
-        //     result.marker.color.push('yellow');
-        //
-        //     let x = 0, y = 0;
-        //
-        //     if (axis === 'x') {
-        //         x = (13.0 * Math.cos(2.0 * params.currQ * params.a * i - currW / params.acousticWMax * currentTime) + getWidth() / 10 * (i - 1));
-        //         y = offset;
-        //         // g.fillOval((int), 40, 20, 20);
-        //     } else {
-        //         x = 15 + getWidth() / 10 * (i - 1);
-        //         y = (13.0 * Math.cos(2.0 * params.currQ * params.a * i - currW / params.acousticWMax * currentTime) + offset);
-        //
-        //     }
-        //
-        //     result.x.push(x);
-        //     result.y.push(y);
-        // }
     }
 
 
@@ -344,11 +378,10 @@ export function calculateAcousticAnimation(currentTime, axis, params) {
 
 }
 
-// const res = calculateBranches({
-//     m1: 1.0,
-//     m2: 2.0,
-//     a: 1.0,
-//     C: 1.0
-// });
-//
-// console.log(res);
+export function calculateAnimation(currentTime, axis, params) {
+    if (axis.toLowerCase() === 'x') {
+        return calculateXAnimation(currentTime, params);
+    }
+
+    return calculateYAnimation(currentTime, params);
+}

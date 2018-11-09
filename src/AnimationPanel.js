@@ -5,7 +5,7 @@ import Plot from 'react-plotly.js';
 
 import * as constants from './logic/constants.js';
 
-import {calculateAcousticAnimation} from './logic/calculate.js';
+import {calculateAnimation} from './logic/calculate.js';
 
 
 export default class AnimationPanel extends PureComponent {
@@ -14,15 +14,14 @@ export default class AnimationPanel extends PureComponent {
 
         isRunning: !false,
         currentTime: 0.0,
-        //mode: 'optical',
-        axis: 'x',
+        axis: 'y',
     };
 
-    startStopAnimation() {
-        this.setState({
-            isRunning: !(this.state.isRunning)
-        });
-    }
+
+    startStopClicked = false;
+
+    axisClicked = false;
+
 
     plot = {
         layout: {
@@ -34,9 +33,15 @@ export default class AnimationPanel extends PureComponent {
                 {
                     buttons: [
                         {
-                            args: ['start/stop'],
+                            args: [''],
                             label: (this.state.isRunning) ? 'Stop' : 'Start',
-                            method: 'restyle'
+                            name: 'start_stop'
+                        },
+
+                        {
+                            args: [''],
+                            label: this.state.axis,
+                            name: 'change_axis'
                         }
                     ],
                     direction: 'left',
@@ -77,6 +82,18 @@ export default class AnimationPanel extends PureComponent {
         this.stopLoop();
     }
 
+    startStopAnimation() {
+        this.setState({
+            isRunning: !(this.state.isRunning)
+        });
+    }
+
+    changeAxis() {
+        this.setState({
+            axis: (this.state.axis === 'x') ? 'y' : 'x'
+        });
+    }
+
     startLoop() {
         if (!this._frameId) {
             this._frameId = window.requestAnimationFrame(this.loop.bind(this));
@@ -85,6 +102,17 @@ export default class AnimationPanel extends PureComponent {
 
     loop() {
         this._frameId = window.requestAnimationFrame(this.loop.bind(this));
+
+        if (this.startStopClicked) {
+            this.startStopClicked = false;
+            return this.startStopAnimation();
+        }
+
+        if (this.axisClicked) {
+            this.axisClicked = false;
+            console.log('axisClicked');
+            return this.changeAxis();
+        }
 
 
         if (!this.state.isRunning)
@@ -119,13 +147,15 @@ export default class AnimationPanel extends PureComponent {
         //
         // });
 
-        return calculateAcousticAnimation(this.state.currentTime, this.state.axis, this.props.animationParams);
+        return calculateAnimation(this.state.currentTime, this.state.axis, this.props.animationParams);
     }
 
 
     render() {
 
         this.plot.layout.updatemenus[0].buttons[0].label = (this.state.isRunning) ? 'Stop' : 'Start';
+
+        this.plot.layout.updatemenus[0].buttons[1].label = this.state.axis;
 
         return (
 
@@ -145,7 +175,15 @@ export default class AnimationPanel extends PureComponent {
                       this.plot.config = figure.config
                   }}
 
-                  onRestyle={this.startStopAnimation.bind(this)}
+                  onButtonClicked={(menu) => {
+                      //this.startStopAnimation.bind(this);
+
+                      if (menu.button.name === 'start_stop')
+                          this.startStopClicked = true;
+
+                      if (menu.button.name === 'change_axis')
+                          this.axisClicked = true;
+                  }}
 
             />
 
