@@ -213,7 +213,7 @@ export function calculateAcousticAnimation(currentTime, axis, params) {
     }
 
 
-    for (let i = 1; i < 14; i++) {
+    for (let i = 1; i <= params.ball_count; i++) {
         let xW = 0, yW = 0,
             xA = 0, yA = 0,
             colorW = 'black', colorA = 'blue';

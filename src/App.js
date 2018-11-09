@@ -30,7 +30,8 @@ class App extends Component {
             m2: 2.0 * constants.protonMass,
             a: 1.0,
             C: 1.0 * constants.scaleFactorC,
-            currQ: 157079632.67948964
+            currQ: 157079632.67948964,
+            ball_count: 6
         }
     };
 

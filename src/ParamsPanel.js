@@ -15,6 +15,7 @@ class ParamsPanel extends PureComponent {
         m2: 2.0,
         a: 1.0,
         C: 1.0,
+        ball_count: 6
     };
     handleInputChange = event => {
         //this.props.textChange(event);
@@ -36,6 +37,7 @@ class ParamsPanel extends PureComponent {
         let newParams = Object.assign({}, this.state);
         newParams.m1 *= constants.protonMass;
         newParams.m2 *= constants.protonMass;
+        newParams.C *= constants.scaleFactorC;
 
         this.props.newParamsHandler(newParams);
         //alert(this.params);
@@ -102,6 +104,17 @@ class ParamsPanel extends PureComponent {
 
 
                 <br/>
+
+
+                <InputGroup>
+                    <InputGroupAddon addonType="prepend">Ball</InputGroupAddon>
+                    <Input name={"ball_count"} value={this.state.ball_count}
+                           placeholder=""
+                           type="number"
+                           min="2" max="100" step="1"
+                           onChange={this.handleInputChange}/>
+                    <InputGroupAddon addonType="append">Count</InputGroupAddon>
+                </InputGroup>
 
 
                 <br/>
