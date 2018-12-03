@@ -14,7 +14,7 @@ export default class AnimationPanel extends PureComponent {
 
         isRunning: !false,
         currentTime: 0.0,
-        axis: 'y',
+        axis: 'T',
     };
 
 
@@ -90,7 +90,7 @@ export default class AnimationPanel extends PureComponent {
 
     changeAxis() {
         this.setState({
-            axis: (this.state.axis === 'x') ? 'y' : 'x'
+            axis: (this.state.axis === 'L') ? 'T' : 'L'
         });
     }
 

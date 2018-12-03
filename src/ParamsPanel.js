@@ -25,11 +25,19 @@ class ParamsPanel extends PureComponent {
         const value = target.type === 'checkbox' ? target.checked : (parseFloat(target.value) || 0);
         const name = target.name;
 
+        target.value = value;
+
 
         this.setState({
             [name]: value
         });
-        //console.log(this.params);
+
+    };
+
+    handleInputKeyPress = event => {
+        if (event.key === 'Enter') {
+            this.handleSetupClick();
+        }
     };
 
     handleSetupClick = () => {
@@ -62,7 +70,9 @@ class ParamsPanel extends PureComponent {
                            placeholder="Mass of 1st"
                            type="number"
                            min="0.0" max="100.0" step="0.1"
-                           onChange={this.handleInputChange}/>
+                           onChange={this.handleInputChange}
+                           onKeyPress={this.handleInputKeyPress}
+                    />
                     <InputGroupAddon addonType="append"> * Mp</InputGroupAddon>
                 </InputGroup>
 
@@ -74,7 +84,9 @@ class ParamsPanel extends PureComponent {
                            placeholder="Mass of 2d"
                            type="number"
                            min="0.0" max="100.0" step="0.1"
-                           onChange={this.handleInputChange}/>
+                           onChange={this.handleInputChange}
+                           onKeyPress={this.handleInputKeyPress}
+                    />
                     <InputGroupAddon addonType="append"> * Mp</InputGroupAddon>
                 </InputGroup>
 
@@ -87,7 +99,9 @@ class ParamsPanel extends PureComponent {
                            placeholder=""
                            type="number"
                            min="0.0" max="100.0" step="0.1"
-                           onChange={this.handleInputChange}/>
+                           onChange={this.handleInputChange}
+                           onKeyPress={this.handleInputKeyPress}
+                    />
                     <InputGroupAddon addonType="append">cm^(-8)</InputGroupAddon>
                 </InputGroup>
 
@@ -98,7 +112,9 @@ class ParamsPanel extends PureComponent {
                            placeholder=""
                            type="number"
                            min="0.0" max="100.0" step="0.1"
-                           onChange={this.handleInputChange}/>
+                           onChange={this.handleInputChange}
+                           onKeyPress={this.handleInputKeyPress}
+                    />
                     <InputGroupAddon addonType="append">10^3 erg / cm^2</InputGroupAddon>
                 </InputGroup>
 
@@ -112,7 +128,9 @@ class ParamsPanel extends PureComponent {
                            placeholder=""
                            type="number"
                            min="2" max="100" step="1"
-                           onChange={this.handleInputChange}/>
+                           onChange={this.handleInputChange}
+                           onKeyPress={this.handleInputKeyPress}
+                    />
                     <InputGroupAddon addonType="append">Count</InputGroupAddon>
                 </InputGroup>
 

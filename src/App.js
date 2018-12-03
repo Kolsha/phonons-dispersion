@@ -158,16 +158,21 @@ class App extends Component {
 
 
                     </Container>
+
+
                 </Jumbotron>
 
+                <hr/>
 
                 <footer className="footer font-small blue">
-                    
-                    <div className="footer-copyright text-center py-3">© 2018 Copyright:
-                        <a href="https://kolsha.ru"> Kolsha</a>
+
+                    <div className="footer-copyright text-center py-3">© 2018:
+                        <a href="https://kolsha.ru" target={"_blank"}> Kolsha</a>
                     </div>
 
                 </footer>
+
+
             </div>
 
 

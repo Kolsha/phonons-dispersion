@@ -379,7 +379,7 @@ export function calculateYAnimation(currentTime, params) {
 }
 
 export function calculateAnimation(currentTime, axis, params) {
-    if (axis.toLowerCase() === 'x') {
+    if (axis.toLowerCase() === 'l') {
         return calculateXAnimation(currentTime, params);
     }
 
